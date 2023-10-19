@@ -1,43 +1,31 @@
 import React, { useState } from 'react';
-import { TextField, IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, Select, MenuItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchBar({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState('');
+const surfLocations = [
+  'Location 1',
+  'Location 2',
+  'Location 3',
+  'Location 4',
+  // Add more surf locations as needed
+];
 
-  const handleSearch = () => {
-    onSearch(searchTerm);
-  };
+const aquaticCreatures = [
+  { label: 'Shark', value: 'Shark' },
+  { label: 'Dolphin', value: 'Dolphin' },
+  { label: 'Whale', value: 'Whale' },
+  { label: 'Octopus', value: 'Octopus' },
+  { label: 'Crab', value: 'Crab' },
+  { label: 'Lobster', value: 'Lobster' },
+];
 
-  const handleInputChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
+function SearchBar() {
   return (
-    <div>
-      <TextField
-        label="Search surf locations"
-        variant="outlined"
-        fullWidth
-        value={searchTerm}
-        onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={handleSearch} edge="end">
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
+    <div className="App">
+    <Select
+      options={aquaticCreatures}
+      onChange={opt => console.log(opt.label, opt.value)}
+    />
     </div>
   );
 }
