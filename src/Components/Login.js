@@ -1,14 +1,49 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, Button, createTheme, Container, TextField, Box } from '@mui/material';
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  createTheme,
+  Container,
+  TextField,
+  Box,
+} from "@mui/material";
+import axios from "axios";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(null);
+
+  const handleLoginClick = () => {
+    // Prepare the data to be sent to the API.
+    const data = {
+      username: username,
+      password: password,
+    };
+
+    // Send a POST request to the API.
+    axios
+      .post("https://localhost:7177/api/auth/login", data)
+      .then((response) => {
+        // Handle the success response here (e.g., store tokens, redirect, etc.).
+        console.log("API Response Message:", response.data);
+        console.log("Authentication successful");
+      })
+      .catch((error) => {
+        // Handle authentication error (e.g., show an error message).
+        setLoginError("Login details incorrect");
+        console.error("Login failed", error);
+      });
+  };
+
   return (
     <Container maxWidth="xs">
       <div>
-        <AppBar position="static">
-        </AppBar>
+        <AppBar position="static"></AppBar>
         <Box sx={{ p: 2 }}>
-          <Typography variant="h5" gutterBottom align = "center">
+          <Typography variant="h5" gutterBottom align="center">
             Login
           </Typography>
           <form>
@@ -20,6 +55,8 @@ const Login = () => {
               label="Username"
               name="username"
               margin="normal"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -30,13 +67,21 @@ const Login = () => {
               name="password"
               type="password"
               margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
+            {loginError && (
+              <div style={{ color: "red", textAlign: "center" }}>
+                {loginError}
+              </div>
+            )}
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
               color="primary"
               sx={{ mt: 2 }}
+              onClick={handleLoginClick}
             >
               Login
             </Button>
@@ -45,6 +90,6 @@ const Login = () => {
       </div>
     </Container>
   );
-}
+};
 
 export default Login;

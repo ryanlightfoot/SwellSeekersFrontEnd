@@ -43,11 +43,6 @@ const customTheme = createTheme(
 //APPLICATION
 function App() {
 
-  //useEffect(() => {
-  //  axios.get('https://localhost:7177/api/Login') //ENABLE TO GET DATA
-  //  .then((response) => {console.log(response.data);})
-  //})
-
   return (
     <ThemeProvider theme={customTheme}>
       <CssBaseline /> {/* Add for global CSS reset */}
