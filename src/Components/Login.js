@@ -1,17 +1,11 @@
-import React, { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  createTheme,
-  Container,
-  TextField,
-  Box,
-} from "@mui/material";
+import React, { useContext, useState } from "react";
+import {AppBar, Typography, Button, Container, TextField, Box} from "@mui/material";
 import axios from "axios";
+import { UserContext } from "../App";
 
 const Login = () => {
+  const { user, setUser } = useContext(UserContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(null);
@@ -28,6 +22,8 @@ const Login = () => {
       .post("https://localhost:7177/api/auth/login", data)
       .then((response) => {
         // Handle the success response here (e.g., store tokens, redirect, etc.).
+        setUser(username); //GLOBAL USER NAME VARIABLE SET
+
         console.log("API Response Message:", response.data);
         console.log("Authentication successful");
       })

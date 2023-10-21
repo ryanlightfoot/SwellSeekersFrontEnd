@@ -7,8 +7,10 @@ import LoginPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import RegisterPage from './Pages/RegisterPage';
 import ForecastTable from './Components/ForecastTable';
-import { useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import ProfilePage from './Pages/ProfilePage';
 
+export const UserContext = createContext(null);
 
 //BELOW IS THE THEME THE WEBSITE WILL BE RUNNING
 const customTheme = createTheme( 
@@ -42,18 +44,23 @@ const customTheme = createTheme(
 
 //APPLICATION
 function App() {
+  const [user, setUser] = useState("");
 
   return (
     <ThemeProvider theme={customTheme}>
       <CssBaseline /> {/* Add for global CSS reset */}
       <Router>
         <div>
+        <UserContext.Provider value={{ user, setUser }}>
+        {/* Your components, including the Login component */}
           <NavBar />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/homepage" element={<HomePage />} />
+            <Route path="/Profile" element={<ProfilePage />} />
           </Routes>
+          </UserContext.Provider>
         </div>
       </Router>
     </ThemeProvider>

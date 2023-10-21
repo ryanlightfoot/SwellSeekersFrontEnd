@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import SearchBar from './SearchBar';
 import { Link } from "react-router-dom";
+import { UserContext } from '../App';
 
 
 function NavBar() {
+
+  const { user } = useContext(UserContext);
+  console.log(user);
 
   return (
     <AppBar position="static" sx={{ paddingTop: '1.15rem', backgroundColor: '#F2F4F3' }}>
@@ -13,12 +17,20 @@ function NavBar() {
         <Typography variant="h6" color="black">SwellSeekers.</Typography>
         </Link>
         <SearchBar />
-        <Link to="/login" style={{ textDecoration: 'none' }}>
-          <Button color="inherit">Login</Button>
-        </Link>
-        <Link to="/Register" style={{ textDecoration: 'none' }}>
-        <Button color="inherit">Register</Button>
-        </Link>
+        {user ? ( // Check if the user is authenticated
+          <Link to="/Profile">
+          <Button color="inherit">Welcome, {user}</Button>
+          </Link>
+        ) : (
+          <>
+            <Link to="/login" style={{ textDecoration: 'none' }}>
+              <Button color="inherit">Login</Button>
+            </Link>
+            <Link to="/Register" style={{ textDecoration: 'none' }}>
+              <Button color="inherit">Register</Button>
+            </Link>
+          </>
+        )}
       </Toolbar>
     </AppBar>
   )
