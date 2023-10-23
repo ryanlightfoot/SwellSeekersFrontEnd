@@ -7,8 +7,13 @@ import { UserContext } from '../App';
 
 function NavBar() {
 
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   console.log(user);
+
+  //Logout the user
+  const handleLogout = () => {
+    setUser(null);
+  }
 
   return (
     <AppBar position="static" sx={{ paddingTop: '1.15rem', backgroundColor: '#F2F4F3' }}>
@@ -18,9 +23,12 @@ function NavBar() {
         </Link>
         <SearchBar />
         {user ? ( // Check if the user is authenticated
+        <div>
           <Link to="/Profile">
           <Button color="inherit">Welcome, {user}</Button>
           </Link>
+          <Button onClick={handleLogout} color="inherit">Logout</Button>
+          </div>
         ) : (
           <>
             <Link to="/login" style={{ textDecoration: 'none' }}>

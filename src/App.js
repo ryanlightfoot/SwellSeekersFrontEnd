@@ -1,14 +1,13 @@
 import './App.css';
-import axios from 'axios'
-import { Button, ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from './Components/NavBar';
 import LoginPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import RegisterPage from './Pages/RegisterPage';
-import ForecastTable from './Components/ForecastTable';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import ProfilePage from './Pages/ProfilePage';
+import ForecastPage from './Pages/ForecastPage';
 
 export const UserContext = createContext(null);
 
@@ -55,6 +54,7 @@ function App() {
         {/* Your components, including the Login component */}
           <NavBar />
           <Routes>
+            <Route path="/Forecast/:location" element={<ForecastPage />} />{/*this will add location variable*/}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/homepage" element={<HomePage />} />

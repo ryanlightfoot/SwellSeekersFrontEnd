@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, setQuery } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function SearchBar() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [surfLocations, setSurfLocations] = useState([]);
+  const [selectedLocationIndex, setSelectedLocationIndex] = useState(-1); 
+  // Initialize with -1 to indicate no selection
 
   useEffect(() => {
     axios.get('https://localhost:7177/api/SurfLocation')
@@ -12,6 +16,7 @@ function SearchBar() {
         // Assuming the API response is an array of surf locations with a 'name' property
         const surfLocationNames = response.data.map(location => location.name);
         setSurfLocations(surfLocationNames);
+        console.log(surfLocations)
       })
       .catch((error) => {
         console.error("Error fetching surf locations: ", error);
@@ -22,8 +27,15 @@ function SearchBar() {
     setQuery(newValue);
   };
 
-  const handleSuggestionClick = (event, value) => {
-    // Add your action here when a suggestion is clicked
+  //Takes user to the forecast page when selected
+  //MAKE IT SEND THE LOCATION ID TOOO FOR THE FORECAST CONDITIONS
+  const handleSuggestionClick = (event, value, index) => {
+    setSelectedLocationIndex(index);
+    const indexLocation = surfLocations.indexOf(value,0)
+      console.log("Clicked: ", value, " :: ", indexLocation)
+    
+    navigate(`/Forecast/${indexLocation}`); //Sends over location selected
+    // REPLACE ABOVE WITH ACTUAL INDEX FROM TABLE/DROPDOWN
   };
 
   const inputStyle = {
@@ -44,7 +56,8 @@ function SearchBar() {
           />
         )}
         onInputChange={handleInputChange}
-        onSelected={handleSuggestionClick}
+        onSelected={(event, value, index) => handleSuggestionClick(event, value, index)}
+        onChange={(_, value) => handleSuggestionClick(_, value)}
       />
     </div>
   );

@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function ForecastTable() {
+
   // Dummy data for the table (replace this with your actual data)
   const data = [
     { time: '9:00 AM', swellSize: 3, swellPeriod: '10 sec', swellDirection: 90, windSpeed: 10, windDirection: 200, temperature: '30°C' },
