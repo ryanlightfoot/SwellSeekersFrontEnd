@@ -1,16 +1,39 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import axios from "axios";
+import { resolvePath } from "react-router-dom";
 
-function ForecastTable() {
+function ForecastTable(vars) {
+const _locationID = parseInt(vars.locationID);
+const [surfCondition, setSurfCondition] = useState("null");
+let populatedChecker = false; //Checks if the the table has data
+let data = [];
 
-  // Dummy data for the table (replace this with your actual data)
-  const data = [
-    { time: '9:00 AM', swellSize: 3, swellPeriod: '10 sec', swellDirection: 90, windSpeed: 10, windDirection: 200, temperature: '30°C' },
-    { time: '12:00 PM', swellSize: 10, swellPeriod: '9 sec', swellDirection: 180, windSpeed: 12, windDirection: 120, temperature: '25°C' },
-    { time: '9:00 AM', swellSize: 3, swellPeriod: '10 sec', swellDirection: 270, windSpeed: 10, windDirection: 24, temperature: '30°C' },
-    { time: '12:00 PM', swellSize: 10, swellPeriod: '9 sec', swellDirection: 0, windSpeed: 12, windDirection: 32, temperature: '25°C' },
-  ];
+
+  useEffect(() => {
+    // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
+    axios.get(`https://localhost:7177/api/LocationConditions/ByLocation/${_locationID}`)
+        .then((response) => {
+
+            setSurfCondition(response.data);
+        })
+        .catch((error) => {
+            console.error("Error fetching surf location: ", error);
+        });
+    }, [_locationID]);
+
+    if (surfCondition && surfCondition[0] && surfCondition[0].dateTime !== null)
+    {
+      data = [
+        { time: '9:00 AM', swellSize: 3, swellPeriod: '10 sec', swellDirection: 90, windSpeed: 10, windDirection: 200, temperature: '30°C' },
+        { time: '12:00 PM', swellSize: 10, swellPeriod: '9 sec', swellDirection: 180, windSpeed: 12, windDirection: 120, temperature: '25°C' },
+        { time: '9:00 AM', swellSize: 3, swellPeriod: '10 sec', swellDirection: 270, windSpeed: 10, windDirection: 24, temperature: '30°C' },
+        { time: '12:00 PM', swellSize: 10, swellPeriod: '9 sec', swellDirection: 0, windSpeed: 12, windDirection: 32, temperature: '25°C' },
+        { time: surfCondition[0].dateTime, swellSize: surfCondition[0].swellSize, swellPeriod: surfCondition[0].swellPeriod, swellDirection: surfCondition[0].swellDirection, windSpeed: surfCondition[0].windspeed, windDirection: surfCondition[0].windDirection, temperature: surfCondition[0].temperature },
+      ];
+      populatedChecker = true;
+    }
 
   //Dynamically assigns windspeed bgColor
   const getWindSpeedColor = (windSpeed) => { 
@@ -56,6 +79,8 @@ function ForecastTable() {
     return <ArrowForwardIcon style={{ transform: `rotate(${rotation}deg)` }} />;
   };
 
+  if (populatedChecker)
+  {
   return (
     <div>
       <TableContainer component={Paper} sx={{ marginTop: '1rem' }}>
@@ -88,6 +113,11 @@ function ForecastTable() {
       </TableContainer>
     </div>
   );
+}
+else
+{
+  return <div>No data to display</div>;
+}
 }
 
 export default ForecastTable;
