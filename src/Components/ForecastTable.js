@@ -28,7 +28,7 @@ let data = [];
       let it = 0;
       while (it < surfCondition.length)
       {
-        data.push({time: surfCondition[it].dateTime, swellSize: surfCondition[it].swellSize, swellPeriod: surfCondition[it].swellPeriod, swellDirection: surfCondition[it].swellDirection, windSpeed: surfCondition[it].windspeed, windDirection: surfCondition[it].windDirection, temperature: surfCondition[it].temperature})
+        data.push({time: surfCondition[it].dateTime, swellSize: surfCondition[it].swellSize, swellPeriod: surfCondition[it].swellPeriod,swellDirection: surfCondition[it].swellDirection, windSpeed: surfCondition[it].windspeed, windDirection: surfCondition[it].windDirection, temperature: surfCondition[it].temperature})
         it = it + 1;
       }
       console.log(surfCondition[1].swellDirection)

@@ -14,6 +14,9 @@ function ForecastPage() {
     const api_key = '554bb738-2ed3-11ee-a26f-0242ac130002-554bb7a6-2ed3-11ee-a26f-0242ac130002';
     const postUrl = 'https://localhost:7177/api/LocationConditions';
     let flag = 0;
+    console.log(location)
+
+
 
     useEffect(() => {
         // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
@@ -35,7 +38,7 @@ function ForecastPage() {
         params: {
           lat: (surfLocation.latitude),
           lng: (surfLocation.longitude),
-          params: 'windSpeed,swellHeight,swellDirection,swellPeriod,airTemperature',
+          params: 'windSpeed,windDirection,swellHeight,swellDirection,swellPeriod,airTemperature',
           end: end.utc().format('X'),
         },
         headers: {
@@ -43,32 +46,32 @@ function ForecastPage() {
         },
       }).then((response) => {
         setconditionData(response);
+        console.log(response);
+      })
+      .catch((error) => {
+          console.error("Error fetching surf location: ", error);
       });
   }, [flag]); //every time stormglassData btn is clicke it runs through the above
 
+
+
     const StormGlassDATA = () => {
           flag = flag + 1;
-          console.log("DATA: ");
-          console.log(conditionData);
-          console.log(conditionData.data);
-          console.log(conditionData.data.hours);
-          /*console.log(conditionData.data.hours[0]);
-          console.log(conditionData.data.hours[0].swellDirection);
-          console.log(conditionData.data.hours[0].swellDirection.meteo);
-          console.log(conditionData.data.hours[0].swellDirection.time); //SUCCESSFULLY GETS METEO VALUE OF
-          console.log(conditionData.data.hours.length);*/
+
+          console.log("WIND DIR: ", conditionData.data.hours[1].windDirection.noaa)
           const conlen = conditionData.data.hours.length
           
           for(let i = 0; i < conlen; i = i + 1)
           {
             const postData = { //Gather data
               condtionID: 0,
-              windspeed: String(conditionData.data.hours[i].windSpeed.meteo),
+              windspeed: String(conditionData.data.hours[i].windSpeed.noaa),
+              windDirection: String(conditionData.data.hours[i].windDirection.noaa),
               swellSize: String(conditionData.data.hours[i].swellHeight.meteo),
               swellDirection: String(conditionData.data.hours[i].swellDirection.meteo),
               swellPeriod: String(conditionData.data.hours[i].swellPeriod.meteo),
               dateTime: String(conditionData.data.hours[i].time),
-              locationID: 2,
+              locationID: realLocation,
               wetsuitID: 1,
               surfboardID: 1,
               location: {
@@ -110,12 +113,7 @@ function ForecastPage() {
 
           postDataToServer();
         }
-          
-
-
           //INSERT DATA
-
-
             
         }
       
