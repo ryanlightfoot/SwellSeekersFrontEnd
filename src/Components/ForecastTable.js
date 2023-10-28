@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import axios from "axios";
-import { resolvePath } from "react-router-dom";
 
 function ForecastTable(vars) {
 const _locationID = parseInt(vars.locationID);
@@ -25,13 +24,15 @@ let data = [];
 
     if (surfCondition && surfCondition[0] && surfCondition[0].dateTime !== null)
     {
-      data = [
-        { time: '9:00 AM', swellSize: 3, swellPeriod: '10 sec', swellDirection: 90, windSpeed: 10, windDirection: 200, temperature: '30°C' },
-        { time: '12:00 PM', swellSize: 10, swellPeriod: '9 sec', swellDirection: 180, windSpeed: 12, windDirection: 120, temperature: '25°C' },
-        { time: '9:00 AM', swellSize: 3, swellPeriod: '10 sec', swellDirection: 270, windSpeed: 10, windDirection: 24, temperature: '30°C' },
-        { time: '12:00 PM', swellSize: 10, swellPeriod: '9 sec', swellDirection: 0, windSpeed: 12, windDirection: 32, temperature: '25°C' },
-        { time: surfCondition[0].dateTime, swellSize: surfCondition[0].swellSize, swellPeriod: surfCondition[0].swellPeriod, swellDirection: surfCondition[0].swellDirection, windSpeed: surfCondition[0].windspeed, windDirection: surfCondition[0].windDirection, temperature: surfCondition[0].temperature },
-      ];
+       //goes through surfcondition array
+      let it = 0;
+      while (it < surfCondition.length)
+      {
+        data.push({time: surfCondition[it].dateTime, swellSize: surfCondition[it].swellSize, swellPeriod: surfCondition[it].swellPeriod, swellDirection: surfCondition[it].swellDirection, windSpeed: surfCondition[it].windspeed, windDirection: surfCondition[it].windDirection, temperature: surfCondition[it].temperature})
+        it = it + 1;
+      }
+      console.log(surfCondition[1].swellDirection)
+
       populatedChecker = true;
     }
 
@@ -118,6 +119,7 @@ else
 {
   return <div>No data to display</div>;
 }
+
 }
 
 export default ForecastTable;
