@@ -17,8 +17,10 @@ function ForecastPage() {
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
-    let flag = 0;
-    console.log(location);
+    let firstCheck = false;
+
+    console.log("REAL LOC: " + location);
+    console.log();
 
     const now = new Date();
     const date = now.getFullYear().toString()+"-"+(now.getMonth() + 1).toString()+"-"+now.getDate().toString()+"T00:00:00"; //GETS TODAYS DATE
@@ -26,19 +28,24 @@ function ForecastPage() {
 
     useEffect(() => {
         // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
+   
         axios.get(`https://localhost:7177/api/SurfLocation/${realLocation}`)
             .then((response) => {
                 setSurfLocation(response.data);
-                
-                console.log(surfLocation.latitude)
-                console.log(surfLocation.longitude)
+                console.log("LOC: " + realLocation);
+                console.log("Resp: ");
+                console.log(response.data);
+                console.log(surfLocation.longitude);
+                console.log(surfLocation.latitude);
             })
             .catch((error) => {
                 console.error("Error fetching surf location: ", error);
             });
     }, [location]);
+    let flag = 0;
+    flag = flag + 1;
 
-    useEffect(() => {
+    const StormGlassDATA = () => {
       // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
       axios.get('https://api.stormglass.io/v2/weather/point', {
         params: {
@@ -57,21 +64,15 @@ function ForecastPage() {
       .catch((error) => {
           console.error("Error fetching surf location: ", error);
       });
-  }, [flag]); //every time stormglassData btn is clicke it runs through the above
 
-
-
-    const StormGlassDATA = () => {
       //Storglass API gets data every ttime flag variable changes
-      flag = flag + 1;
+      flag = flag + 1; 
       //The Try catches the error of initial loading the conditionData
       try {
-          console.log("WIND DIR: ", conditionData.data.hours[1].windDirection.noaa)
-          const conlen = conditionData.data.hours.length
+          const conlen = conditionData.data.hours.length;
           
           for(let i = 0; i < conlen; i = i + 1)
           {
-
             const postData = { //Gather data
               condtionID: 0,
               windspeed: String(conditionData.data.hours[i].windSpeed.noaa),
@@ -112,12 +113,9 @@ function ForecastPage() {
           }
           console.log(postData)
           async function postDataToServer() {
-            try {
+            
               const response = await axios.post(postUrl, postData);
               console.log('Data posted successfully:', response.data);
-            } catch (error) {
-              console.error('Error posting data:', error);
-            }
           }
 
           postDataToServer();
@@ -140,6 +138,7 @@ function ForecastPage() {
       <h1>{surfLocation.name}</h1>
       <p>{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={date}/>
+
       <Button onClick={StormGlassDATA}>Update database</Button>
       
     </div>

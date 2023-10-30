@@ -123,7 +123,7 @@ console.log("INSIDE: " + _forecastDay);
                 <TableCell sx={{ backgroundColor: getSwellSizeColor(row.swellSize) }}>{row.swellSize} ft</TableCell>
                 <TableCell>{row.swellPeriod} s</TableCell>
                 <TableCell>{getDirectionIcon(row.swellDirection)}</TableCell>
-                <TableCell sx={{ backgroundColor: getWindSpeedColor(row.windSpeed) }}>{row.windSpeed}</TableCell>
+                <TableCell sx={{ backgroundColor: getWindSpeedColor(row.windSpeed) }}>{row.windSpeed} m/s</TableCell>
                 <TableCell>{getDirectionIcon(row.windDirection)}</TableCell>
                 <TableCell>{row.temperature}</TableCell>
               </TableRow>
