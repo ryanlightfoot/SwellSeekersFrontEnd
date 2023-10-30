@@ -56,13 +56,16 @@ function ForecastPage() {
 
 
     const StormGlassDATA = () => {
-          flag = flag + 1;
-
+      //Storglass API gets data every ttime flag variable changes
+      flag = flag + 1;
+      //The Try catches the error of initial loading the conditionData
+      try {
           console.log("WIND DIR: ", conditionData.data.hours[1].windDirection.noaa)
           const conlen = conditionData.data.hours.length
           
           for(let i = 0; i < conlen; i = i + 1)
           {
+
             const postData = { //Gather data
               condtionID: 0,
               windspeed: String(conditionData.data.hours[i].windSpeed.noaa),
@@ -112,7 +115,14 @@ function ForecastPage() {
           }
 
           postDataToServer();
+
+
         }
+
+      } catch (error)
+      {
+        console.error('Error loading data:', error)
+      }
           //INSERT DATA
             
         }

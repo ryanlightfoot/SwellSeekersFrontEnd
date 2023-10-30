@@ -8,14 +8,23 @@ const _locationID = parseInt(vars.locationID);
 const [surfCondition, setSurfCondition] = useState("null");
 let populatedChecker = false; //Checks if the the table has data
 let data = [];
+let date = "";
+let day = "";
+let month = "";
+let year = "";
+const feetconv = 3.28084; // Meter to feet conversion
 
 
   useEffect(() => {
     // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
     axios.get(`https://localhost:7177/api/LocationConditions/ByLocation/${_locationID}`)
         .then((response) => {
-
             setSurfCondition(response.data);
+            date = new Date(surfCondition[0].dateTime);
+            day = date.getDate();
+            month = (date.getMonth() + 1);
+            year = date.getFullYear();
+            console.log("Month " + year +surfCondition[0].dateTime);
         })
         .catch((error) => {
             console.error("Error fetching surf location: ", error);
@@ -28,7 +37,10 @@ let data = [];
       let it = 0;
       while (it < surfCondition.length)
       {
-        data.push({time: surfCondition[it].dateTime, swellSize: surfCondition[it].swellSize, swellPeriod: surfCondition[it].swellPeriod,swellDirection: surfCondition[it].swellDirection, windSpeed: surfCondition[it].windspeed, windDirection: surfCondition[it].windDirection, temperature: surfCondition[it].temperature})
+        const date = new Date(surfCondition[it].dateTime);
+        const hours = (date.getHours() + ":00");
+
+        data.push({time: hours, swellSize: (surfCondition[it].swellSize*feetconv).toFixed(2), swellPeriod: surfCondition[it].swellPeriod,swellDirection: surfCondition[it].swellDirection, windSpeed: surfCondition[it].windspeed, windDirection: surfCondition[it].windDirection, temperature: surfCondition[it].temperature})
         it = it + 1;
       }
       console.log(surfCondition[1].swellDirection)
@@ -74,6 +86,19 @@ let data = [];
     }
   };
 
+  const groupedData = {}; // Create an object to group data by date
+
+  // Organize data by date
+  data.forEach((row) => {
+    const date = row.date; // Replace 'date' with the actual property containing the date
+  
+    if (!groupedData[date]) {
+      groupedData[date] = [];
+    }
+  
+    groupedData[date].push(row);
+  });
+
   //Use data to point icon the correct  direction
   const getDirectionIcon = (degrees) => {
     const rotation = degrees  + 90;
@@ -84,6 +109,7 @@ let data = [];
   {
   return (
     <div>
+      <h2>{day}, {month}, {year}</h2>
       <TableContainer component={Paper} sx={{ marginTop: '1rem' }}>
         <Table>
           <TableHead>
@@ -99,10 +125,11 @@ let data = [];
           </TableHead>
           <TableBody>
             {data.map((row, index) => (
+              
               <TableRow key={index}>
                 <TableCell>{row.time}</TableCell>
                 <TableCell sx={{ backgroundColor: getSwellSizeColor(row.swellSize) }}>{row.swellSize} ft</TableCell>
-                <TableCell>{row.swellPeriod}</TableCell>
+                <TableCell>{row.swellPeriod} s</TableCell>
                 <TableCell>{getDirectionIcon(row.swellDirection)}</TableCell>
                 <TableCell sx={{ backgroundColor: getWindSpeedColor(row.windSpeed) }}>{row.windSpeed}</TableCell>
                 <TableCell>{getDirectionIcon(row.windDirection)}</TableCell>
