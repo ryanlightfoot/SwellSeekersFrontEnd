@@ -5,26 +5,19 @@ import axios from "axios";
 
 function ForecastTable(vars) {
 const _locationID = parseInt(vars.locationID);
+const _forecastDay = vars.forecastDay;
 const [surfCondition, setSurfCondition] = useState("null");
 let populatedChecker = false; //Checks if the the table has data
 let data = [];
-let date = "";
-let day = "";
-let month = "";
-let year = "";
 const feetconv = 3.28084; // Meter to feet conversion
 
+console.log("INSIDE: " + _forecastDay);
 
   useEffect(() => {
     // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
-    axios.get(`https://localhost:7177/api/LocationConditions/ByLocation/${_locationID}`)
+    axios.get(`https://localhost:7177/api/LocationConditions/ByLocation/${_locationID}?forecastDate=${_forecastDay}`)
         .then((response) => {
             setSurfCondition(response.data);
-            date = new Date(surfCondition[0].dateTime);
-            day = date.getDate();
-            month = (date.getMonth() + 1);
-            year = date.getFullYear();
-            console.log("Month " + year +surfCondition[0].dateTime);
         })
         .catch((error) => {
             console.error("Error fetching surf location: ", error);
@@ -109,7 +102,6 @@ const feetconv = 3.28084; // Meter to feet conversion
   {
   return (
     <div>
-      <h2>{day}, {month}, {year}</h2>
       <TableContainer component={Paper} sx={{ marginTop: '1rem' }}>
         <Table>
           <TableHead>

@@ -13,10 +13,16 @@ function ForecastPage() {
     const end = moment().add(5, 'days').startOf('day');
     const api_key = '554bb738-2ed3-11ee-a26f-0242ac130002-554bb7a6-2ed3-11ee-a26f-0242ac130002';
     const postUrl = 'https://localhost:7177/api/LocationConditions';
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
     let flag = 0;
-    console.log(location)
+    console.log(location);
 
-
+    const now = new Date();
+    const date = now.getFullYear().toString()+"-"+(now.getMonth() + 1).toString()+"-"+now.getDate().toString()+"T00:00:00"; //GETS TODAYS DATE
+    console.log("TODAY " + date);
 
     useEffect(() => {
         // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
@@ -132,7 +138,8 @@ function ForecastPage() {
   return (
     <div>
       <h1>{surfLocation.name}</h1>
-      <ForecastTable locationID={realLocation}/>
+      <p>{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
+      <ForecastTable locationID={realLocation} forecastDay={date}/>
       <Button onClick={StormGlassDATA}>Update database</Button>
       
     </div>
