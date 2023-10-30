@@ -21,7 +21,7 @@ function NavBar() {
         <Link to="/HomePage" style={{ textDecoration: 'none', color: 'inherit' }}>
         <Typography variant="h6" color="black">SwellSeekers.</Typography>
         </Link>
-        <SearchBar />
+        <SearchBar/>
         {user ? ( // Check if the user is authenticated
         <div>
           <Link to="/Profile">

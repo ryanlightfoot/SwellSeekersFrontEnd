@@ -1,12 +1,12 @@
 import React from "react";
-import ForecastTable from "../Components/ForecastTable";
 
 function HomePage() {
   return (
     <div>
-      <h1>Welcome to SwellSeekers!</h1>
+      <h2 align="center">Welcome to SwellSeekers!</h2>
+      <hr style={{ width: '50%' }}/>
 
-      <p>Welcome to SwellSeekers, your premier destination for 
+      <p align="center" style={{ padding: '0.5% 10% 0.5% 10%' }}>Welcome to SwellSeekers, your premier destination for 
         surf enthusiasts. Our dedicated team of expert forecasters 
         provides real-time wave predictions, expert insights, and 
         precise data on tide, wind, and water conditions, ensuring 

@@ -53,7 +53,7 @@ function ForecastPage() {
     let flag = 0;
     flag = flag + 1;
 
-    const StormGlassDATA = () => {
+    const StormGlassDATA = async () => {
       // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
       axios.get('https://api.stormglass.io/v2/weather/point', {
         params: {
@@ -71,6 +71,7 @@ function ForecastPage() {
       })
       .catch((error) => {
           console.error("Error fetching surf location: ", error);
+          console.log(error.response);
       });
 
       //Storglass API gets data every ttime flag variable changes
@@ -81,6 +82,7 @@ function ForecastPage() {
           
           for(let i = 0; i < conlen; i = i + 1)
           {
+            console.log(conditionData.data.hours[i].airTemperature.sg);
             const postData = { //Gather data
               condtionID: 0,
               windspeed: String(conditionData.data.hours[i].windSpeed.noaa),
@@ -88,6 +90,7 @@ function ForecastPage() {
               swellSize: String(conditionData.data.hours[i].swellHeight.meteo),
               swellDirection: String(conditionData.data.hours[i].swellDirection.meteo),
               swellPeriod: String(conditionData.data.hours[i].swellPeriod.meteo),
+              temp: String(conditionData.data.hours[i].airTemperature.sg),
               dateTime: String(conditionData.data.hours[i].time),
               locationID: realLocation,
               wetsuitID: 1,
@@ -120,20 +123,19 @@ function ForecastPage() {
               }
           }
           console.log(postData)
-          async function postDataToServer() {
+          
+            async function postDataToServer() {
             
               const response = await axios.post(postUrl, postData);
               console.log('Data posted successfully:', response.data);
           }
-
           postDataToServer();
-
-
         }
 
       } catch (error)
       {
         console.error('Error loading data:', error)
+        console.log(error.response);
       }
           //INSERT DATA
             
@@ -141,19 +143,27 @@ function ForecastPage() {
 
   return (
     <div>
-      <h1>{surfLocation.name}</h1>
-      <p>{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
+      <h2 align="center">{surfLocation.name}<hr style={{ width: '50%' }}/></h2>
+
+      <p align="center" style={{ padding: '0.5% 10% 0.5% 10%' }}>{surfLocation.description}</p>
+
+      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={date}/>
-      <p>{date2.toString()}</p>
+      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date2.getDate()}, {monthNames[date2.getMonth()]}, {date2.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date2.getFullYear().toString()+"-"+(date2.getMonth() + 1).toString()+"-"+date2.getDate().toString()+"T00:00:00")}/>
-      <p>{date3.toString()}</p>
+      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date3.getDate()}, {monthNames[date3.getMonth()]}, {date3.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date3.getFullYear().toString()+"-"+(date3.getMonth() + 1).toString()+"-"+date3.getDate().toString()+"T00:00:00")}/>
-      <p>{date4.toString()}</p>
+      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date4.getDate()}, {monthNames[date4.getMonth()]}, {date4.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date4.getFullYear().toString()+"-"+(date4.getMonth() + 1).toString()+"-"+date4.getDate().toString()+"T00:00:00")}/>
-      <p>{date5.toString()}</p>
+      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date5.getDate()}, {monthNames[date5.getMonth()]}, {date5.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date5.getFullYear().toString()+"-"+(date5.getMonth() + 1).toString()+"-"+date5.getDate().toString()+"T00:00:00")}/>
       <Button onClick={StormGlassDATA}>Update database</Button>
-      <p></p>
+      <p align="Center" style={{ fontSize: '80%' }}>
+        ft - feet<br />
+        s - seconds<br />
+        °C - Degrees celsius<br />
+        m/s - meters per second
+      </p>
     </div>
   );
 }

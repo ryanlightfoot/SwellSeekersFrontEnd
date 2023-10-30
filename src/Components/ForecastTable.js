@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import axios from "axios";
+import Tooltip from '@mui/material/Tooltip';
 
 function ForecastTable(vars) {
 const _locationID = parseInt(vars.locationID);
@@ -10,8 +11,6 @@ const [surfCondition, setSurfCondition] = useState("null");
 let populatedChecker = false; //Checks if the the table has data
 let data = [];
 const feetconv = 3.28084; // Meter to feet conversion
-
-console.log("INSIDE: " + _forecastDay);
 
   useEffect(() => {
     // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
@@ -32,11 +31,9 @@ console.log("INSIDE: " + _forecastDay);
       {
         const date = new Date(surfCondition[it].dateTime);
         const hours = (date.getHours() + ":00");
-
-        data.push({time: hours, swellSize: (surfCondition[it].swellSize*feetconv).toFixed(2), swellPeriod: surfCondition[it].swellPeriod,swellDirection: surfCondition[it].swellDirection, windSpeed: surfCondition[it].windspeed, windDirection: surfCondition[it].windDirection, temperature: surfCondition[it].temperature})
+        data.push({time: hours, swellSize: (surfCondition[it].swellSize*feetconv).toFixed(2), swellPeriod: surfCondition[it].swellPeriod,swellDirection: surfCondition[it].swellDirection, windSpeed: surfCondition[it].windspeed, windDirection: surfCondition[it].windDirection, temperature: surfCondition[it].temp})
         it = it + 1;
       }
-      console.log(surfCondition[1].swellDirection)
 
       populatedChecker = true;
     }
@@ -94,7 +91,7 @@ console.log("INSIDE: " + _forecastDay);
 
   //Use data to point icon the correct  direction
   const getDirectionIcon = (degrees) => {
-    const rotation = degrees  + 90;
+    const rotation = parseInt(degrees)  + 90;
     return <ArrowForwardIcon style={{ transform: `rotate(${rotation}deg)` }} />;
   };
 
@@ -106,26 +103,30 @@ console.log("INSIDE: " + _forecastDay);
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Time</TableCell>
-              <TableCell>Swell Size</TableCell>
-              <TableCell>Swell Period</TableCell>
-              <TableCell>Swell Direction</TableCell>
-              <TableCell>Wind Speed</TableCell>
-              <TableCell>Wind Direction</TableCell>
-              <TableCell>Temperature</TableCell>
+              <TableCell align="center">Time</TableCell>
+              <TableCell align="center">Swell Size</TableCell>
+              <TableCell align="center">Swell Period</TableCell>
+              <TableCell align="center">Swell Direction</TableCell>
+              <TableCell align="center">Wind Speed</TableCell>
+              <TableCell align="center">Wind Direction</TableCell>
+              <TableCell align="center">Temperature</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((row, index) => (
               
               <TableRow key={index}>
-                <TableCell>{row.time}</TableCell>
-                <TableCell sx={{ backgroundColor: getSwellSizeColor(row.swellSize) }}>{row.swellSize} ft</TableCell>
-                <TableCell>{row.swellPeriod} s</TableCell>
-                <TableCell>{getDirectionIcon(row.swellDirection)}</TableCell>
-                <TableCell sx={{ backgroundColor: getWindSpeedColor(row.windSpeed) }}>{row.windSpeed} m/s</TableCell>
-                <TableCell>{getDirectionIcon(row.windDirection)}</TableCell>
-                <TableCell>{row.temperature}</TableCell>
+                <TableCell align="center">{row.time}</TableCell>
+                <TableCell align="center" sx={{ backgroundColor: getSwellSizeColor(row.swellSize) }}>{row.swellSize} ft</TableCell>
+                <TableCell align="center">{row.swellPeriod} s</TableCell>
+                <Tooltip title={`${row.swellDirection}°`} arrow>
+                  <TableCell align="center">{getDirectionIcon(row.swellDirection)}</TableCell>
+                </Tooltip>
+                <TableCell align="center" sx={{ backgroundColor: getWindSpeedColor(row.windSpeed) }}>{row.windSpeed} m/s</TableCell>
+                <Tooltip title={`${row.windDirection}°`} arrow>
+                  <TableCell align="center">{getDirectionIcon(row.windDirection)}</TableCell>
+                </Tooltip>
+                <TableCell align="center">{row.temperature}°C</TableCell>
               </TableRow>
             ))}
           </TableBody>

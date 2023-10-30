@@ -40,7 +40,7 @@ const Login = () => {
       <div>
         <AppBar position="static"></AppBar>
         <Box sx={{ p: 2 }}>
-          <Typography variant="h5" gutterBottom align="center">
+          <Typography variant="h5" gutterBottom align="center" >
             Login
           </Typography>
           <form>
