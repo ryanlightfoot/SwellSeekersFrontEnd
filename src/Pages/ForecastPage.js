@@ -24,6 +24,14 @@ function ForecastPage() {
 
     const now = new Date();
     const date = now.getFullYear().toString()+"-"+(now.getMonth() + 1).toString()+"-"+now.getDate().toString()+"T00:00:00"; //GETS TODAYS DATE
+    const date2 = new Date(now);
+    date2.setDate(now.getDate() + 1);
+    const date3 = new Date(date2);
+    date3.setDate(date2.getDate() + 1);
+    const date4 = new Date(date3);
+    date4.setDate(date3.getDate() + 1);
+    const date5 = new Date(date4);
+    date5.setDate(date4.getDate() + 1);
     console.log("TODAY " + date);
 
     useEffect(() => {
@@ -130,17 +138,22 @@ function ForecastPage() {
           //INSERT DATA
             
         }
-      
-
 
   return (
     <div>
       <h1>{surfLocation.name}</h1>
       <p>{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={date}/>
-
+      <p>{date2.toString()}</p>
+      <ForecastTable locationID={realLocation} forecastDay={(date2.getFullYear().toString()+"-"+(date2.getMonth() + 1).toString()+"-"+date2.getDate().toString()+"T00:00:00")}/>
+      <p>{date3.toString()}</p>
+      <ForecastTable locationID={realLocation} forecastDay={(date3.getFullYear().toString()+"-"+(date3.getMonth() + 1).toString()+"-"+date3.getDate().toString()+"T00:00:00")}/>
+      <p>{date4.toString()}</p>
+      <ForecastTable locationID={realLocation} forecastDay={(date4.getFullYear().toString()+"-"+(date4.getMonth() + 1).toString()+"-"+date4.getDate().toString()+"T00:00:00")}/>
+      <p>{date5.toString()}</p>
+      <ForecastTable locationID={realLocation} forecastDay={(date5.getFullYear().toString()+"-"+(date5.getMonth() + 1).toString()+"-"+date5.getDate().toString()+"T00:00:00")}/>
       <Button onClick={StormGlassDATA}>Update database</Button>
-      
+      <p></p>
     </div>
   );
 }
