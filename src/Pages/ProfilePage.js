@@ -1,15 +1,18 @@
 import React, { useContext } from "react";
 import Button from '@mui/material/Button';
 import { UserContext } from '../App';
+import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
 
   const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   //Perform logout of account
   const logout = () => 
   {
     setUser(null);
+    navigate("/");
   }
 
   return (

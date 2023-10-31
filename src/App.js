@@ -46,10 +46,10 @@ function App() {
   const [user, setUser] = useState("");
 
   return (
-    <ThemeProvider theme={customTheme}>
-      <CssBaseline /> {/* Add for global CSS reset */}
+    <>
+      <CssBaseline class="all" /> {/* Add for global CSS reset */}
       <Router>
-        <div>
+        <div class="all">
         <UserContext.Provider value={{ user, setUser }}>
         {/* Your components, including the Login component */}
           <NavBar />
@@ -57,13 +57,14 @@ function App() {
             <Route path="/Forecast/:location" element={<ForecastPage />} />{/*this will add location variable*/}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/homepage" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} /> {/* Catch-all route */}
             <Route path="/Profile" element={<ProfilePage />} />
           </Routes>
+
           </UserContext.Provider>
         </div>
       </Router>
-    </ThemeProvider>
+    </>
   );
 }
 

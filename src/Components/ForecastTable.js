@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import axios from "axios";
 import Tooltip from '@mui/material/Tooltip';
+import './Scroller.css'; // Same CSS styling as wetsuit
 
 function ForecastTable(vars) {
 const _locationID = parseInt(vars.locationID);
@@ -92,17 +93,18 @@ const feetconv = 3.28084; // Meter to feet conversion
   //Use data to point icon the correct  direction
   const getDirectionIcon = (degrees) => {
     const rotation = parseInt(degrees)  + 90;
-    return <ArrowForwardIcon style={{ transform: `rotate(${rotation}deg)` }} />;
+    return <ArrowForwardIcon style={{ transform: `rotate(${rotation}deg)` }} 
+            alt={degrees}/>;
   };
 
   if (populatedChecker)
   {
   return (
     <div>
-      <TableContainer component={Paper} sx={{ marginTop: '1rem' }}>
-        <Table>
+      <TableContainer component={Paper} sx={{ marginTop: '1rem' }} class="forecastBack">
+        <Table class="forecastTable">
           <TableHead>
-            <TableRow>
+            <TableRow class="forecastRows">
               <TableCell align="center">Time</TableCell>
               <TableCell align="center">Swell Size</TableCell>
               <TableCell align="center">Swell Period</TableCell>

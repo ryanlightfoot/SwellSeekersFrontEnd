@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Button, Container, TextField, Box } from '@mui/material';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,12 +12,17 @@ const Register = () => {
     email: "",
   });
 
+  const navigate = useNavigate();
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleRegister = () => {
+    //CHECK IF USERS username and Email already exists
+
+
     // Send a POST request to the API with the form data
     axios
       .post("https://localhost:7177/api/Auth/InsertLoginUser", formData)
@@ -28,6 +34,8 @@ const Register = () => {
         // Handle registration error (e.g., show an error message).
         console.error("Registration failed", error);
       });
+      //PUT BACK IN SUCCESS REG WHEN FIXED REG POST
+      navigate("/");
   };
 
   return (

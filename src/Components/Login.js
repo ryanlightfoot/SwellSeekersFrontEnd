@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import {AppBar, Typography, Button, Container, TextField, Box, Link} from "@mui/material";
 import axios from "axios";
 import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   
@@ -10,6 +11,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(null);
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
     // Prepare the data to be sent to the API.
@@ -27,6 +29,8 @@ const Login = () => {
 
         console.log("API Response Message:", response.data);
         console.log("Authentication successful");
+        // Navigates user back home
+        navigate("/");
       })
       .catch((error) => {
         // Handle authentication error (e.g., show an error message).

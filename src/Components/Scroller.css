@@ -1,0 +1,99 @@
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+.wetsuit-scroller-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex; /* Add this */
+    align-items: center; /* Add this to center vertically */
+    justify-content: center; /* Add this to center horizontally */
+    height: 5.5%;
+    background-color: #C4C2C2;
+    
+  }
+  
+  /* Rest of your CSS styles */
+  .wetsuit-list {
+    display: inline-block;
+    min-width: 100%;
+  }
+
+  .forecastTable{
+    background-color: #C4C2C2;
+    margin: 0 auto;
+    width: 90%;
+    justify-content: center; /* Horizontally center the content */
+  }
+
+  .forecastBack{
+    background-color: #D9D9D9;
+  }
+
+  .navBarPos{
+    display: flex;
+    justify-content: space-between; /* Horizontally center the content */
+    align-items: center;
+    margin-right: 5%;
+    margin-left: 5%;
+  }
+  
+  .wetsuit-item {
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    /* Add your styling for wetsuit items here */
+  }
+  
+  .selected {
+    background-color: #abaaaa;
+    /* Add your styling for selected wetsuit items here */
+  }
+
+  /* CSS */
+  .button-5 {
+    align-items: center;
+    background-clip: padding-box;
+    background-color: #E8B95E;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #464A45;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 80%;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 2px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: 50%;
+  }
+  
+  .button-5:hover,
+  .button-5:focus {
+    background-color: #fb8332;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  }
+  
+  .button-5:hover {
+    transform: translateY(-1px);
+  }
+  
+  .button-5:active {
+    background-color: #c85000;
+    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+    transform: translateY(0);
+  }

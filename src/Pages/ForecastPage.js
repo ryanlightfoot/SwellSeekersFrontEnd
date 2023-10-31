@@ -4,6 +4,8 @@ import ForecastTable from "../Components/ForecastTable";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
+import JsPDF from 'jspdf';
+import './HomePage.css';
 
 function ForecastPage() {
     const { location } = useParams();
@@ -17,7 +19,7 @@ function ForecastPage() {
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
-    let firstCheck = false;
+    let conlen;
 
     console.log("REAL LOC: " + location);
     console.log();
@@ -55,7 +57,7 @@ function ForecastPage() {
 
     const StormGlassDATA = async () => {
       // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
-      axios.get('https://api.stormglass.io/v2/weather/point', {
+      const response = await axios.get('https://api.stormglass.io/v2/weather/point', {
         params: {
           lat: (surfLocation.latitude),
           lng: (surfLocation.longitude),
@@ -68,28 +70,27 @@ function ForecastPage() {
       }).then((response) => {
         setconditionData(response);
         console.log(response);
+
       })
       .catch((error) => {
           console.error("Error fetching surf location: ", error);
           console.log(error.response);
       });
 
+      conlen = conditionData.data.hours.length;
       //Storglass API gets data every ttime flag variable changes
       flag = flag + 1; 
       //The Try catches the error of initial loading the conditionData
       try {
-          const conlen = conditionData.data.hours.length;
-          
           for(let i = 0; i < conlen; i = i + 1)
           {
-            console.log(conditionData.data.hours[i].airTemperature.sg);
             const postData = { //Gather data
               condtionID: 0,
-              windspeed: String(conditionData.data.hours[i].windSpeed.noaa),
-              windDirection: String(conditionData.data.hours[i].windDirection.noaa),
-              swellSize: String(conditionData.data.hours[i].swellHeight.meteo),
-              swellDirection: String(conditionData.data.hours[i].swellDirection.meteo),
-              swellPeriod: String(conditionData.data.hours[i].swellPeriod.meteo),
+              windspeed: String(conditionData.data.hours[i].windSpeed.sg),
+              windDirection: String(conditionData.data.hours[i].windDirection.sg),
+              swellSize: String(conditionData.data.hours[i].swellHeight.sg),
+              swellDirection: String(conditionData.data.hours[i].swellDirection.sg),
+              swellPeriod: String(conditionData.data.hours[i].swellPeriod.sg),
               temp: String(conditionData.data.hours[i].airTemperature.sg),
               dateTime: String(conditionData.data.hours[i].time),
               locationID: realLocation,
@@ -139,29 +140,66 @@ function ForecastPage() {
       }
           //INSERT DATA
             
-        }
+      }
+
+      //WRITE PDF REPORT OF FORECASTS
+      const generatePDF = () => {
+        const fileName = "Forecast_" + now.getDate() + "-" + now.getMonth() + "-" + now.getFullYear() + ".pdf";
+      
+        // Define the scaling factor (adjust as needed)
+        const scaleFactor = 0.75; // 0.75 means 75% of the original size
+      
+        const contentElement = document.querySelector('#report');
+        const originalWidth = contentElement.clientWidth;
+        const originalHeight = contentElement.clientHeight;
+      
+        // Calculate the scaled dimensions
+        const scaledWidth = originalWidth * scaleFactor;
+        const scaledHeight = originalHeight * scaleFactor;
+      
+        contentElement.style.width = scaledWidth + 'px';
+        contentElement.style.height = scaledHeight + 'px';
+      
+        const report = new JsPDF('landscape', 'pt', 'a4');
+        report.html(contentElement).then(() => {
+          report.save(fileName);
+      
+          // Restore the original dimensions after generating the PDF
+          contentElement.style.width = originalWidth + 'px';
+          contentElement.style.height = originalHeight + 'px';
+        });
+      }
+      
 
   return (
-    <div>
-      <h2 align="center">{surfLocation.name}<hr style={{ width: '50%' }}/></h2>
+    <div id="report" class="forecastBack">
+      <p class="title">{surfLocation.name}, {surfLocation.country}</p>
+      <hr style={{ width: '50%' }}/>
 
       <p align="center" style={{ padding: '0.5% 10% 0.5% 10%' }}>{surfLocation.description}</p>
 
-      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
+      <p class="dates">{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={date}/>
-      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date2.getDate()}, {monthNames[date2.getMonth()]}, {date2.getFullYear()}</p>
+      <p class="dates">{date2.getDate()}, {monthNames[date2.getMonth()]}, {date2.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date2.getFullYear().toString()+"-"+(date2.getMonth() + 1).toString()+"-"+date2.getDate().toString()+"T00:00:00")}/>
-      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date3.getDate()}, {monthNames[date3.getMonth()]}, {date3.getFullYear()}</p>
+      <p class="dates">{date3.getDate()}, {monthNames[date3.getMonth()]}, {date3.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date3.getFullYear().toString()+"-"+(date3.getMonth() + 1).toString()+"-"+date3.getDate().toString()+"T00:00:00")}/>
-      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date4.getDate()}, {monthNames[date4.getMonth()]}, {date4.getFullYear()}</p>
+      <p class="dates">{date4.getDate()}, {monthNames[date4.getMonth()]}, {date4.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date4.getFullYear().toString()+"-"+(date4.getMonth() + 1).toString()+"-"+date4.getDate().toString()+"T00:00:00")}/>
-      <p style={{ padding: '1% 1% 0.1% 2.5%' }}>{date5.getDate()}, {monthNames[date5.getMonth()]}, {date5.getFullYear()}</p>
+      <p class="dates">{date5.getDate()}, {monthNames[date5.getMonth()]}, {date5.getFullYear()}</p>
       <ForecastTable locationID={realLocation} forecastDay={(date5.getFullYear().toString()+"-"+(date5.getMonth() + 1).toString()+"-"+date5.getDate().toString()+"T00:00:00")}/>
-      <Button onClick={StormGlassDATA}>Update database</Button>
-      <p align="Center" style={{ fontSize: '80%' }}>
-        ft - feet<br />
-        s - seconds<br />
-        °C - Degrees celsius<br />
+      <div class="botForeButtons">
+      <div class="footerText">
+      <p class="coords">latitude: {surfLocation.latitude}</p>
+      <p class="coords">longitude: {surfLocation.longitude}</p>
+      </div>
+      <button onClick={StormGlassDATA} class="button-5">Update database</button>
+      <button onClick={generatePDF} class="button-5">Export PDF</button>
+      </div>
+      <p class="coords">
+        ft - feet
+        s - seconds
+        °C - Degrees celsius
         m/s - meters per second
       </p>
     </div>
