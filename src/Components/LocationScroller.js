@@ -47,9 +47,8 @@ function LocationScroller() {
     }, [Location]);
 
     const handleSurfBoardClick = (locationID) => {
-        setSelectedLocation(parseInt(locationID) - 1);
+        setSelectedLocation(parseInt(locationID) - 1 );
         const ID = parseInt(locationID);
-        console.log("LOCATIONNN: " + ID);
         navigate(`/Forecast/${(ID)}`);
     };
 

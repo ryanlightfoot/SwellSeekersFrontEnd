@@ -2,12 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import './Scroller.css'; // Same CSS styling as wetsuit
 import axios from 'axios';
 import { UserContext } from "../App";
-//https://localhost:7177/api/SurfBoard
+import { useNavigate } from 'react-router-dom';
 
 function SurfBoardScroller() {
 
   const [SurfBoard, setSurfBoard] = useState([]);
   const { userID } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const [selectedSurfBoard, setSelectedSurfBoard] = useState(null);
   const [SurfBoards, setSurfBoards] = useState(null);
@@ -21,7 +22,7 @@ function SurfBoardScroller() {
         return response2.data;
       })
       .catch((error) => {
-        console.error("Error fetching surf location: ", error);
+        console.error("Error fetching Surfboards: ", error);
         return null;
       })
     }, [userID]);
@@ -40,6 +41,7 @@ function SurfBoardScroller() {
 
   const handleSurfBoardClick = (SurfBoard) => {
     setSelectedSurfBoard(SurfBoard);
+    navigate(`/SurfBoard/1`);
   };
   return (
     <div align="center" className="wetsuit-scroller-container">

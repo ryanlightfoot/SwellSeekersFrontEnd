@@ -5,8 +5,13 @@ import axios from 'axios';
 import moment from 'moment';
 import JsPDF from 'jspdf';
 import './HomePage.css';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+
 
 function ForecastPage() {
+
+  
+
     const { location } = useParams();
     const realLocation = parseInt(location) + 1; //GETS the actual location pos
     const [surfLocation, setSurfLocation] = useState("null");

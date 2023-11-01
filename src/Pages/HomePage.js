@@ -8,6 +8,8 @@ import img2 from "../assets/HomePage2.jpg";
 import './HomePage.css';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import OwnedSurfboardScroller from "../Components/OwnedSurfboardscroller";
+import OwnedWetsuitScroller from "../Components/OwnedWetsuitScroller";
 
 function HomePage() {
 
@@ -45,9 +47,9 @@ function HomePage() {
               <p class="title">Your Favourite Locations</p>
               <LocationScroller/>
               <p class="title">Your Wetsuits</p>
-              <WetsuitScroller/>
+              <OwnedWetsuitScroller/>
               <p class="title">Your Surfboards</p>
-              <SurfBoardScroller/>
+              <OwnedSurfboardScroller/>
             </>
 
         ) : (

@@ -8,6 +8,8 @@ import RegisterPage from './Pages/RegisterPage';
 import { createContext, useState } from 'react';
 import ProfilePage from './Pages/ProfilePage';
 import ForecastPage from './Pages/ForecastPage';
+import WetsuitPage from './Pages/WetsuitPage'
+import SurfboardPage from './Pages/SurfboardPage'
 
 export const UserContext = createContext(null);
 
@@ -56,6 +58,8 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/Forecast/:location" element={<ForecastPage />} />{/*this will add location variable*/}
+            <Route path="/Wetsuit/:wetsuitID" element={<WetsuitPage />} />
+            <Route path="/Surfboard/:surfboardID" element={<SurfboardPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<HomePage />} /> {/* Catch-all route */}
