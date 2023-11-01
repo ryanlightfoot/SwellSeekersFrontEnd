@@ -7,11 +7,18 @@ import img1 from "../assets/HomePage1.jpg";
 import img2 from "../assets/HomePage2.jpg";
 import './HomePage.css';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
 
   const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
   let locationNames = []
+
+  const navJBay = () => {
+    // Perform the action you want when the div is clicked
+    navigate(`/Forecast/0`);
+  };
 
   useEffect(() => {
     // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
@@ -31,8 +38,7 @@ function HomePage() {
     console.log(locationNames[0]);
   return (
     <div class="allBack" >
-      <p class="title">Welcome to SwellSeekers.</p>
-      <hr width="25%"/>
+
 
         {user ? (
             <>
@@ -50,11 +56,9 @@ function HomePage() {
               <WetsuitScroller/>
               <p class="title">Surfboards</p>
               <SurfBoardScroller/>
-              <p class="title">Locations</p>
-              <SurfBoardScroller/>
             </> 
         )}
-        <p class="biggerfont"><b>About us</b></p>
+        <p class="title">About us</p>
       <div class="content">
       <img src={img1} alt="SwellSeekers Image" class="left-image"></img>
       <p align="center" style={{ padding: '0.5% 6% 0.5% 6%' }}>Welcome to SwellSeekers, your premier destination for 
@@ -67,7 +71,8 @@ function HomePage() {
         informed surfing experience. Join us and stay in the know because 
         every wave matters.</p>
       </div>
-      <div class="content">
+      <p class="title">Spots to check out</p>
+      <div class="clickablecontent" onClick={navJBay}>
               <img src={img2} alt="SwellSeekers Image" class="left-image"></img>
                 <p align="center" style={{ padding: '0.5% 6% 0.5% 6%' }}>
                   <b class="biggerfont">Jeffreys Bay</b><br/>

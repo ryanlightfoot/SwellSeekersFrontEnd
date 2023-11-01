@@ -14,6 +14,18 @@
     margin-bottom: 10%;
   }
 
+  .clickablecontent {
+    background-color: #C4C2C2;
+    display: flex; /* Use a flexbox container to create a column layout */
+    align-items: center; /* Vertically center the image and text */
+    margin-right: 5%;
+    height: 10%;
+    margin-left: 5%;
+    margin-top: 2%;
+    margin-bottom: 10%;
+    cursor: pointer;
+  }  
+
   .biggerfont{
     font-size: larger;
     display: flex; /* Use a flexbox container to create a column layout */

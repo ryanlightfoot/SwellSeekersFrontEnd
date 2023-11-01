@@ -1,24 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Scroller.css'; // Same CSS styling as wetsuit
+import axios from 'axios';
+import { UserContext } from "../App";
+//https://localhost:7177/api/SurfBoard
 
 function SurfBoardScroller() {
-  const SurfBoard = [
-    'SurfBoard 1',
-    'SurfBoard 2',
-    'SurfBoard 3',
-    'SurfBoard 4',
-    'SurfBoard 5',
-    'SurfBoard 6',
-    'SurfBoard 7',
-    // Add more SurfBoard as needed
-  ];
+
+  const [SurfBoard, setSurfBoard] = useState([]);
+  const { userID } = useContext(UserContext);
 
   const [selectedSurfBoard, setSelectedSurfBoard] = useState(null);
+  const [SurfBoards, setSurfBoards] = useState(null);
+
+  useEffect(() => {
+    axios.get(`https://localhost:7177/api/SurfBoard`)
+      .then((response2) => {
+        setSurfBoards(response2.data);
+        console.log("NAME: " + response2.data[0].name);
+        
+        return response2.data;
+      })
+      .catch((error) => {
+        console.error("Error fetching surf location: ", error);
+        return null;
+      })
+    }, [userID]);
+
+    useEffect(() => {
+      let data = [];
+      if (SurfBoards && SurfBoards.length > 0) {
+        for (let i = 0; i < SurfBoards.length; i++) {
+          console.log("EEEEEEEE" + SurfBoards[i].name);
+          data.push((SurfBoards[i].size + ", " + SurfBoards[i].name));
+        }
+        setSurfBoard(data);
+      }
+      }, [SurfBoards]);
+
 
   const handleSurfBoardClick = (SurfBoard) => {
     setSelectedSurfBoard(SurfBoard);
   };
-
   return (
     <div align="center" className="wetsuit-scroller-container">
       <div className="wetsuit-list">
