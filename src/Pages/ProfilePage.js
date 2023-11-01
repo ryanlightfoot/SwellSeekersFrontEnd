@@ -5,22 +5,24 @@ import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
 
-  const { setUser } = useContext(UserContext);
+  const { setUser, setUserID } = useContext(UserContext);
   const navigate = useNavigate();
 
   //Perform logout of account
   const logout = () => 
   {
+    setUserID(null);
     setUser(null);
     navigate("/");
+    window.location.reload();
   }
 
   return (
     <div>
       <form>
       <h3>Edit your profile</h3>
-      <Button onClick={logout}>Log out</Button>
-      <Button>Change username</Button>
+      <button class="button-5" onClick={logout}>Log out</button>
+      <button class="button-5">Change username</button>
       </form>
     </div>
   );

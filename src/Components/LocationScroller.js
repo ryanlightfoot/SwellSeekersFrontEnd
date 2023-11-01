@@ -5,32 +5,52 @@ import { UserContext } from "../App";
 
 function LocationScroller() {
 
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, userID, setUserID  } = useContext(UserContext);
+    const [Location, setLocation] = useState("null");
+    const [LocName, setLocName] = useState([]);
+    const [Locations, setLocations] = useState([]);
+    let Locations2 = [];
+    let flag;
+
 
     useEffect(() => {
-        // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
-        axios.get(`https://localhost:7177/api/Favourite/ByUser?_userId=1`)
-            .then((response) => {
-                    console.log("FAVS");
-                    console.log(response);
-            })
-            .catch((error) => {
-                console.error("Error fetching surf location: ", error);
-            });
-        }, [user]);
-
-
-
-  const Locations = [
-    'Loc 1',
-    'Loc 2',
-    'Loc 3',
-    'Loc 4',
-    'Loc 5',
-    'Loc 6',
-    'Loc 7',
-    // Add more SurfBoard as needed
-  ];
+      axios.get(`https://localhost:7177/api/Favourite/ByUser?_userId=${userID}`)
+          .then((response) => {
+              setLocation(response.data);
+              console.log("FAVS");
+              console.log(Location.length);
+  
+              const locationPromises = [];
+  
+              for (let i = 1; i < (Location.length); i += 1) {
+                  locationPromises.push(
+                      axios.get(`https://localhost:7177/api/SurfLocation/${i}`)
+                          .then((response2) => {
+                              return response2.data.name;
+                          })
+                          .catch((error) => {
+                              console.error("Error fetching surf location: ", error);
+                              console.log(error.response);
+                              return null;
+                          })
+                  );
+              }
+  
+              Promise.all(locationPromises)
+                  .then((locationNames) => {
+                      const filteredLocationNames = locationNames.filter((name) => name !== null);
+                      console.log("Locations");
+                      console.log(filteredLocationNames);
+                      setLocations(filteredLocationNames);
+                  });
+          })
+          .catch((error) => {
+              console.error("Error fetching favorite locations: ", error);
+          });
+  }, [user]);
+  
+        console.log("PPPP");
+        console.log(LocName);
 
   const [selectedLocation, setSelectedLocation] = useState(null);
 

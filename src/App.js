@@ -44,13 +44,14 @@ const customTheme = createTheme(
 //APPLICATION
 function App() {
   const [user, setUser] = useState("");
+  const [userID, setUserID] = useState("");
 
   return (
     <>
       <CssBaseline class="all" /> {/* Add for global CSS reset */}
       <Router>
         <div class="all">
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, userID, setUserID  }}>
         {/* Your components, including the Login component */}
           <NavBar />
           <Routes>

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   
   const { user, setUser } = useContext(UserContext);
+  const { userID, setUserID } = useContext(UserContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +27,7 @@ const Login = () => {
       .then((response) => {
         // Handle the success response here (e.g., store tokens, redirect, etc.).
         setUser(username); //GLOBAL USER NAME VARIABLE SET
+        setUserID(response.data.userID);
 
         console.log("API Response Message:", response.data);
         console.log("Authentication successful");

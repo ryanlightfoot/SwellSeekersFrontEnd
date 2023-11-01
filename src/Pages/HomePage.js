@@ -33,11 +33,11 @@ function HomePage() {
     <div class="allBack" >
       <p class="title">Welcome to SwellSeekers.</p>
       <hr width="25%"/>
-      <LocationScroller/>
+
         {user ? (
             <>
               <p class="title">Your Favourite Locations</p>
-              <WetsuitScroller/>
+              <LocationScroller/>
               <p class="title">Your Wetsuits</p>
               <WetsuitScroller/>
               <p class="title">Your Surfboards</p>

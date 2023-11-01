@@ -9,13 +9,16 @@ import './Scroller.css';
 function NavBar() {
 
   const { user, setUser } = useContext(UserContext);
+  const { userID, setUserID } = useContext(UserContext);
   const navigate = useNavigate();
   console.log(user);
 
   //Logout the user
   const handleLogout = () => {
     setUser(null);
+    setUserID(null);
     navigate("/");
+    window.location.reload();
   }
 
   return (
