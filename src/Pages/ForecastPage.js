@@ -5,7 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import JsPDF from 'jspdf';
 import './HomePage.css';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 function ForecastPage() {
@@ -16,6 +16,7 @@ function ForecastPage() {
     const realLocation = parseInt(location) + 1; //GETS the actual location pos
     const [surfLocation, setSurfLocation] = useState("null");
     const [conditionData, setconditionData] = useState("null");
+    const [DataName, setDataName] = useState([]);
     const end = moment().add(5, 'days').startOf('day');
     const api_key = '554bb738-2ed3-11ee-a26f-0242ac130002-554bb7a6-2ed3-11ee-a26f-0242ac130002';
     const postUrl = 'https://localhost:7177/api/LocationConditions';
@@ -59,9 +60,70 @@ function ForecastPage() {
     let flag = 0;
     flag = flag + 1;
 
-    const StormGlassDATA = async () => {
+    useEffect(() => {
       // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
-      const response = await axios.get('https://api.stormglass.io/v2/weather/point', {
+      try {
+        for(let i = 0; i < conditionData.data.hours.length; i = i + 1)
+        {
+          const postData = { //Gather data
+            condtionID: 0,
+            windspeed: String(conditionData.data.hours[i].windSpeed.sg),
+            windDirection: String(conditionData.data.hours[i].windDirection.sg),
+            swellSize: String(conditionData.data.hours[i].swellHeight.sg),
+            swellDirection: String(conditionData.data.hours[i].swellDirection.sg),
+            swellPeriod: String(conditionData.data.hours[i].swellPeriod.sg),
+            temp: String(conditionData.data.hours[i].airTemperature.sg),
+            dateTime: String(conditionData.data.hours[i].time),
+            locationID: realLocation,
+            wetsuitID: 1,
+            surfboardID: 1,
+            location: {
+              locationID: 0,
+              name: "string",
+              country: "string",
+              description: "string",
+              longitude: "string",
+              latitude: "string"
+            },
+            suit: {
+              wetsuitID: 0,
+              type: "string",
+              thickness: "string",
+              hightemp: "string",
+              lowtemp: "string",
+              name: "string",
+              brand: "string"
+            },
+            board: {
+              surfBoardID: 0,
+              size: "string",
+              type: "string",
+              highSwell: "string",
+              lowSwell: "string",
+              name: "string",
+              brand: "string"
+            }
+        }
+        console.log(postData)
+        
+          async function postDataToServer() {
+          
+            const response = await axios.post(postUrl, postData);
+            console.log('Data posted successfully:', response.data);
+        }
+        postDataToServer();
+      }
+
+    } catch (error)
+    {
+      console.error('Error loading data:', error)
+      console.log(error.response);
+    }
+  }, [conditionData]);
+
+    const StormGlassDATA = () => {
+      // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
+      axios.get('https://api.stormglass.io/v2/weather/point', {
         params: {
           lat: (surfLocation.latitude),
           lng: (surfLocation.longitude),
@@ -81,67 +143,10 @@ function ForecastPage() {
           console.log(error.response);
       });
 
-      conlen = conditionData.data.hours.length;
       //Storglass API gets data every ttime flag variable changes
       flag = flag + 1; 
       //The Try catches the error of initial loading the conditionData
-      try {
-          for(let i = 0; i < conlen; i = i + 1)
-          {
-            const postData = { //Gather data
-              condtionID: 0,
-              windspeed: String(conditionData.data.hours[i].windSpeed.sg),
-              windDirection: String(conditionData.data.hours[i].windDirection.sg),
-              swellSize: String(conditionData.data.hours[i].swellHeight.sg),
-              swellDirection: String(conditionData.data.hours[i].swellDirection.sg),
-              swellPeriod: String(conditionData.data.hours[i].swellPeriod.sg),
-              temp: String(conditionData.data.hours[i].airTemperature.sg),
-              dateTime: String(conditionData.data.hours[i].time),
-              locationID: realLocation,
-              wetsuitID: 1,
-              surfboardID: 1,
-              location: {
-                locationID: 0,
-                name: "string",
-                country: "string",
-                description: "string",
-                longitude: "string",
-                latitude: "string"
-              },
-              suit: {
-                wetsuitID: 0,
-                type: "string",
-                thickness: "string",
-                hightemp: "string",
-                lowtemp: "string",
-                name: "string",
-                brand: "string"
-              },
-              board: {
-                surfBoardID: 0,
-                size: "string",
-                type: "string",
-                highSwell: "string",
-                lowSwell: "string",
-                name: "string",
-                brand: "string"
-              }
-          }
-          console.log(postData)
-          
-            async function postDataToServer() {
-            
-              const response = await axios.post(postUrl, postData);
-              console.log('Data posted successfully:', response.data);
-          }
-          postDataToServer();
-        }
 
-      } catch (error)
-      {
-        console.error('Error loading data:', error)
-        console.log(error.response);
-      }
           //INSERT DATA
             
       }
@@ -161,8 +166,7 @@ function ForecastPage() {
         const scaledWidth = originalWidth * scaleFactor;
         const scaledHeight = originalHeight * scaleFactor;
       
-        contentElement.style.width = scaledWidth + 'px';
-        contentElement.style.height = scaledHeight + 'px';
+
       
         const report = new JsPDF('landscape', 'pt', 'a4');
         report.html(contentElement).then(() => {
