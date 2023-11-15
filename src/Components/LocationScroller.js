@@ -3,17 +3,21 @@ import './Scroller.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from "../App";
+import { Favorite } from '@mui/icons-material';
 
 function LocationScroller() {
     const navigate = useNavigate();
     const { userID } = useContext(UserContext); // No need for user and setUser in this component
     const [Location, setLocation] = useState([]);
     const [Locations, setLocations] = useState([]);
+    let [Names] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(0);
 
     useEffect(() => {
         axios.get(`https://localhost:7177/api/Favourite/ByUser?_userId=${userID}`)
             .then((response) => {
+
+                console.log(response.data[0].locationID);
                 setLocation(response.data);
             })
             .catch((error) => {
@@ -25,11 +29,14 @@ function LocationScroller() {
         if (Location.length > 0) {
             const locationPromises = [];
 
-            for (let i = 1; i < Location.length + 2; i += 1) {
+            for (let i = 0; i < Location.length; i += 1) {
+                console.log("TIKKKKK" + i);
+                console.log(Location[i].locationID);
                 locationPromises.push(
-                    axios.get(`https://localhost:7177/api/SurfLocation/${i}`)
+                    axios.get(`https://localhost:7177/api/SurfLocation/${Location[i].locationID}`)
                         .then((response2) => {
-                            return response2.data.name;
+                            Names.push(response2.data.name);
+                            return response2.data.locationID;
                         })
                         .catch((error) => {
                             console.error("Error fetching surf location: ", error);
@@ -46,9 +53,13 @@ function LocationScroller() {
         }
     }, [Location]);
 
+    console.log("CHEEEK");
+    console.log(Names);
+
     const handleSurfBoardClick = (locationID) => {
-        setSelectedLocation(parseInt(locationID) - 1 );
-        const ID = parseInt(locationID);
+        setSelectedLocation(parseInt(locationID));
+
+        const ID = parseInt(locationID - 1);
         navigate(`/Forecast/${(ID)}`);
     };
 
@@ -62,9 +73,9 @@ function LocationScroller() {
                     <div
                         key={index}
                         className={`wetsuit-item ${selectedLocation === Location[index]?.locationID ? 'selected' : ''}`}
-                        onClick={() => handleSurfBoardClick(index)}
+                        onClick={() => handleSurfBoardClick(Locations[index])}
                     >
-                        {locationName}
+                        {Names[index]}
                     </div>
                 ))}
             </div>

@@ -5,6 +5,7 @@ import SurfBoardScroller from "../Components/SurfBoardScroller";
 import LocationScroller from "../Components/LocationScroller";
 import img1 from "../assets/HomePage1.jpg";
 import img2 from "../assets/HomePage2.jpg";
+import img3 from "../assets/Homepage3.jpg";
 import './HomePage.css';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,11 @@ function HomePage() {
   const navJBay = () => {
     // Perform the action you want when the div is clicked
     navigate(`/Forecast/0`);
+  };
+
+  const navMun = () => {
+    // Perform the action you want when the div is clicked
+    navigate(`/Forecast/1`);
   };
 
   useEffect(() => {
@@ -54,25 +60,21 @@ function HomePage() {
 
         ) : (
             <>
-              <p class="title">Wetsuits</p>
-              <WetsuitScroller/>
-              <p class="title">Surfboards</p>
-              <SurfBoardScroller/>
+            <p class="title">About us</p>
+            <div class="content">
+              <img src={img1} alt="SwellSeekers Image" class="left-image"></img>
+              <p align="center" style={{ padding: '0.5% 6% 0.5% 6%' }}>Welcome to SwellSeekers, your premier destination for 
+                surf enthusiasts. Our dedicated team of expert forecasters 
+                provides real-time wave predictions, expert insights, and 
+                precise data on tide, wind, and water conditions, ensuring 
+                you're always prepared for the perfect ride. With a community 
+                of surfers at your fingertips and access to surfing destinations 
+                worldwide, SwellSeekers is your go-to source for a seamless and 
+                informed surfing experience. Join us and stay in the know because 
+                every wave matters.</p>
+            </div>
             </> 
         )}
-        <p class="title">About us</p>
-      <div class="content">
-      <img src={img1} alt="SwellSeekers Image" class="left-image"></img>
-      <p align="center" style={{ padding: '0.5% 6% 0.5% 6%' }}>Welcome to SwellSeekers, your premier destination for 
-        surf enthusiasts. Our dedicated team of expert forecasters 
-        provides real-time wave predictions, expert insights, and 
-        precise data on tide, wind, and water conditions, ensuring 
-        you're always prepared for the perfect ride. With a community 
-        of surfers at your fingertips and access to surfing destinations 
-        worldwide, SwellSeekers is your go-to source for a seamless and 
-        informed surfing experience. Join us and stay in the know because 
-        every wave matters.</p>
-      </div>
       <p class="title">Spots to check out</p>
       <div class="clickablecontent" onClick={navJBay}>
               <img src={img2} alt="SwellSeekers Image" class="left-image"></img>
@@ -87,6 +89,25 @@ function HomePage() {
                    for surf enthusiasts and beach lovers alike.
                 </p>
               </div>
+              <div class="clickablecontent" onClick={navMun}>
+              <img src={img3} alt="SwellSeekers Image" class="left-image"></img>
+                <p align="center" style={{ padding: '0.5% 6% 0.5% 6%' }}>
+                  <b class="biggerfont">Mundaka</b><br/>
+                  Mundaka, located in the Basque Country of northern Spain, 
+                  is a picturesque coastal town renowned for its world-class 
+                  surfing conditions. It is often referred to as one of the top 
+                  surf destinations in Europe, attracting surfers from around 
+                  the globe. With its stunning natural beauty, charming streets, 
+                  and vibrant local culture, Mundaka offers not only thrilling waves
+                   but also a delightful experience for visitors exploring its
+                    unique coastal setting.
+                </p>
+              </div>
+              
+              <p class="title">Wetsuits</p>
+              <WetsuitScroller/>
+              <p class="title">Surfboards</p>
+              <SurfBoardScroller/>
       <div class="extend"></div>
 
     </div>

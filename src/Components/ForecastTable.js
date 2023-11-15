@@ -12,6 +12,22 @@ const [surfCondition, setSurfCondition] = useState("null");
 let populatedChecker = false; //Checks if the the table has data
 let data = [];
 const feetconv = 3.28084; // Meter to feet conversion
+const now = new Date(_forecastDay);
+const date = now.getFullYear().toString()+"-"+(now.getMonth() + 1).toString()+"-"+now.getDate().toString()+"T00:00:00"; //GETS TODAYS DATE
+const date2 = new Date(now);
+date2.setDate(now.getDate() + 1);
+const date3 = new Date(date2);
+date3.setDate(date2.getDate() + 1);
+const date4 = new Date(date3);
+date4.setDate(date3.getDate() + 1);
+const date5 = new Date(date4);
+date5.setDate(date4.getDate() + 1);
+console.log("TODAY " + date);
+
+const monthNames = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 
   useEffect(() => {
     // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
@@ -101,6 +117,7 @@ const feetconv = 3.28084; // Meter to feet conversion
   {
   return (
     <div>
+            <p class="dates">{now.getDate()}, {monthNames[now.getMonth()]}, {now.getFullYear()}</p>
       <TableContainer component={Paper} sx={{ marginTop: '1rem' }} class="forecastBack">
         <Table class="forecastTable">
           <TableHead>
@@ -139,7 +156,7 @@ const feetconv = 3.28084; // Meter to feet conversion
 }
 else
 {
-  return <div>No data to display</div>;
+  return null;
 }
 
 }

@@ -46,18 +46,22 @@ function OwnedSurfboardScroller() {
       };
       return (
         <div align="center" className="wetsuit-scroller-container">
+        {SurfBoard.length > 0 ? (
           <div className="wetsuit-list">
-            {SurfBoard.map((SurfBoard, index) => (
+            {SurfBoard.map((surfboard, index) => (
               <div
                 key={index}
-                className={`wetsuit-item ${selectedSurfBoard === SurfBoard ? 'selected' : ''}`}
-                onClick={() => handleSurfBoardClick(SurfBoard)}
+                className={`wetsuit-item ${selectedSurfBoard === surfboard ? 'selected' : ''}`}
+                onClick={() => handleSurfBoardClick(surfboard)}
               >
-                {SurfBoard}
+                {surfboard}
               </div>
             ))}
           </div>
-        </div>
+        ) : (
+          <p>You have not favorited any surfboards</p>
+        )}
+      </div>
       );
     }
     

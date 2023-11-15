@@ -39,25 +39,27 @@ function SurfBoardScroller() {
       }, [SurfBoards]);
 
 
-  const handleSurfBoardClick = (SurfBoard) => {
-    setSelectedSurfBoard(SurfBoard);
-    navigate(`/SurfBoard/1`);
-  };
-  return (
-    <div align="center" className="wetsuit-scroller-container">
-      <div className="wetsuit-list">
-        {SurfBoard.map((SurfBoard, index) => (
-          <div
-            key={index}
-            className={`wetsuit-item ${selectedSurfBoard === SurfBoard ? 'selected' : ''}`}
-            onClick={() => handleSurfBoardClick(SurfBoard)}
-          >
-            {SurfBoard}
+      const handleSurfBoardClick = (surfBoard, index) => {
+        setSelectedSurfBoard(surfBoard - 1);
+        index = index + 1;
+        navigate(`/SurfBoard/${index}`,{state: {index}});
+      };
+      
+      return (
+        <div align="center" className="wetsuit-scroller-container">
+          <div className="wetsuit-list">
+            {SurfBoard.map((surfBoard, index) => (
+              <div
+                key={index}
+                className={`wetsuit-item ${selectedSurfBoard === surfBoard ? 'selected' : ''}`}
+                onClick={() => handleSurfBoardClick(surfBoard, index)}
+              >
+                {surfBoard}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
-  );
+        </div>
+      );
 }
 
 export default SurfBoardScroller;

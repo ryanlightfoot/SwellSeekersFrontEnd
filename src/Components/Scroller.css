@@ -55,6 +55,7 @@
   /* CSS */
   .button-5 {
     align-items: center;
+    white-space: nowrap;
     background-clip: padding-box;
     background-color: #E8B95E;
     border: 1px solid transparent;

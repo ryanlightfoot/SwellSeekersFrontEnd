@@ -3,6 +3,7 @@ import './Scroller.css'; // Same CSS styling as wetsuit
 import axios from 'axios';
 import { UserContext } from "../App";
 import { useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 
 function WetsuitScroller() {
@@ -50,26 +51,28 @@ function WetsuitScroller() {
         }, [Wetsuits]);
 
 
-  const handleWetsuitClick = (wetsuit) => {
-    setSelectedWetsuit(wetsuit);
-    navigate(`/Wetsuit/1`);
-  };
-
-  return (
-    <div align="center" className="wetsuit-scroller-container">
-      <div className="wetsuit-list">
-        {Wetsuit.map((wetsuit, index) => (
-          <div
-            key={index}
-            className={`wetsuit-item ${selectedWetsuit === wetsuit ? 'selected' : ''}`}
-            onClick={() => handleWetsuitClick(wetsuit)}
-          >
-            {wetsuit}
+        const handleWetsuitClick = (wetsuit, index) => {
+          setSelectedWetsuit(wetsuit - 1);
+          index = index + 1;
+          navigate(`/Wetsuit/${index}`,{state: {index}});
+        };
+        
+        return (
+          <div align="center" className="wetsuit-scroller-container">
+            <div className="wetsuit-list">
+              {Wetsuit.map((wetsuit, index) => (
+                <div
+                  key={index}
+                  className={`wetsuit-item ${selectedWetsuit === wetsuit ? 'selected' : ''}`}
+                  onClick={() => handleWetsuitClick(wetsuit, index)}
+                >
+                  {wetsuit}
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
-  );
+        );
+        
 }
 
 export default WetsuitScroller;

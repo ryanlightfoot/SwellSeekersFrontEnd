@@ -47,18 +47,22 @@ useEffect(() => {
 
   return (
     <div align="center" className="wetsuit-scroller-container">
+    {Suit.length > 0 ? (
       <div className="wetsuit-list">
-        {Suit.map((Suit, index) => (
+        {Suit.map((suit, index) => (
           <div
             key={index}
-            className={`wetsuit-item ${selectedWetsuit === Suit ? 'selected' : ''}`}
-            onClick={() => handleWetsuitClick(Suit)}
+            className={`wetsuit-item ${selectedWetsuit === suit ? 'selected' : ''}`}
+            onClick={() => handleWetsuitClick(suit)}
           >
-            {Suit}
+            {suit}
           </div>
         ))}
       </div>
-    </div>
+    ) : (
+      <p>You have not selected any wetsuits</p>
+    )}
+  </div>
   );
 }
 

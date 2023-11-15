@@ -10,6 +10,7 @@ import ProfilePage from './Pages/ProfilePage';
 import ForecastPage from './Pages/ForecastPage';
 import WetsuitPage from './Pages/WetsuitPage'
 import SurfboardPage from './Pages/SurfboardPage'
+import ChangeUserName from './Pages/ChangeUserName';
 
 export const UserContext = createContext(null);
 
@@ -47,19 +48,21 @@ const customTheme = createTheme(
 function App() {
   const [user, setUser] = useState("");
   const [userID, setUserID] = useState("");
+  const [userTypeID, setUserTypeID] = useState("");
 
   return (
     <>
       <CssBaseline class="all" /> {/* Add for global CSS reset */}
       <Router>
         <div class="all">
-        <UserContext.Provider value={{ user, setUser, userID, setUserID  }}>
+        <UserContext.Provider value={{ user, setUser, userID, setUserID, userTypeID, setUserTypeID }}>
         {/* Your components, including the Login component */}
           <NavBar />
           <Routes>
             <Route path="/Forecast/:location" element={<ForecastPage />} />{/*this will add location variable*/}
             <Route path="/Wetsuit/:wetsuitID" element={<WetsuitPage />} />
             <Route path="/Surfboard/:surfboardID" element={<SurfboardPage />} />
+            <Route path="/ChangeUser" element={<ChangeUserName />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<HomePage />} /> {/* Catch-all route */}

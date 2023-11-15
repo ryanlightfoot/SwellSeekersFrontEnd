@@ -8,6 +8,7 @@ const Login = () => {
   
   const { user, setUser } = useContext(UserContext);
   const { userID, setUserID } = useContext(UserContext);
+  const { userTypeID, setUserTypeID } = useContext(UserContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +29,7 @@ const Login = () => {
         // Handle the success response here (e.g., store tokens, redirect, etc.).
         setUser(username); //GLOBAL USER NAME VARIABLE SET
         setUserID(response.data.userID);
+        setUserTypeID(response.data.userType);
 
         console.log("API Response Message:", response.data);
         console.log("Authentication successful");

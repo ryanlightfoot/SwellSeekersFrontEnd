@@ -23,6 +23,10 @@ function SearchBar() {
       });
   }, []);
 
+  const handleClear = () => {
+    navigate('/');
+  };
+
   const handleInputChange = (event, newValue) => {
     setQuery(newValue);
   };
@@ -34,7 +38,15 @@ function SearchBar() {
     const indexLocation = surfLocations.indexOf(value,0)
       console.log("Clicked: ", value, " :: ", indexLocation)
     
-    navigate(`/Forecast/${indexLocation}`); //Sends over location selected
+      if(indexLocation === -1)
+      {
+        navigate(`/`);
+      }
+      else
+      {
+        navigate(`/Forecast/${indexLocation}`);
+      }
+     //Sends over location selected
     // REPLACE ABOVE WITH ACTUAL INDEX FROM TABLE/DROPDOWN
   };
 
@@ -55,6 +67,7 @@ function SearchBar() {
             style={inputStyle}
           />
         )}
+        onClear={handleClear}
         onInputChange={handleInputChange}
         onSelected={(event, value, index) => handleSuggestionClick(event, value, index)}
         onChange={(_, value) => handleSuggestionClick(_, value)}
