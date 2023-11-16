@@ -10,6 +10,7 @@ const _locationID = parseInt(vars.locationID);
 const _forecastDay = vars.forecastDay;
 const [surfCondition, setSurfCondition] = useState("null");
 const [surfBoard, setsurfBoard] = useState("null");
+const [surfTemp, setsurfTemp] = useState("null");
 let populatedChecker = false; //Checks if the the table has data
 let data = [];
 const feetconv = 3.28084; // Meter to feet conversion
@@ -140,6 +141,17 @@ const monthNames = [
       });
   }, [averageSwell]);
 
+  useEffect(() => {
+
+    axios.get(`https://localhost:7177/api/Wetsuit/average/${String(averageTemp)}`)
+      .then((response) => {
+        setsurfTemp(response.data);
+      })
+      .catch((error) => {
+          console.error("Error fetching surf location: ", error);
+      });
+  }, [averageSwell]);
+
   //Use data to point icon the correct  direction
   const getDirectionIcon = (degrees) => {
     const rotation = parseInt(degrees)  + 90;
@@ -187,6 +199,7 @@ const monthNames = [
       </TableContainer>
       <p class="dates">Average swell: {averageSwell} Average temp: {averageTemp}</p>
       <p class="dates">Suggested Board:  {surfBoard.type} {surfBoard.brand} {surfBoard.name}</p>
+      <p class="dates">Suggested Wetsuit:  {surfTemp.type} {surfTemp.brand} {surfTemp.name}</p>
     </div>
   );
 }
