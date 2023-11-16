@@ -6,14 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 const ChangeUserName = () => {
     const [newUsername, setNewUsername] = useState(""); // State to store the new username
-  
+    const { userID } = useContext(UserContext);
     const handleUsernameChange = (event) => {
       setNewUsername(event.target.value);
-    };
-  
-    const handleSubmit = () => {
-      // You can add the logic here to send a request to the server to update the username
-      console.log("New username:", newUsername);
+
+      axios.put(`https://localhost:7177/api/Auth/ChangeUsername/${userID}`, { newUsername });
     };
   
     return (
@@ -24,7 +21,7 @@ const ChangeUserName = () => {
           variant="outlined"
           fullWidth
           value={newUsername}
-          onChange={handleUsernameChange}
+          onClick={handleUsernameChange}
           margin="normal"
         />
             <Button

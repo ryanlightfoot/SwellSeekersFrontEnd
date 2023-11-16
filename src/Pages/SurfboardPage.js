@@ -1,15 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, { useContext, useEffect, useState} from "react";
+import { UserContext } from "../App";
 import Register from "../Components/Register";
 import OwnedSurfboardScroller from "../Components/OwnedSurfboardscroller";
 import img1 from "../assets/SurfboardPage1.jpg";
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
+import StarIcon from '@mui/icons-material/Star';
 
 function SurfboardPage() {
+  const { userID } = useContext(UserContext);
   const location = useLocation();
   const { state } = location;
   const { index } = state || {};
   const [surfboard, setSurfboard] = useState("null");
+  const [Favsurfboard, setFavsurfboard] = useState("null");
+  const [star, setStar] = useState(0);
 
   console.log("PEEPEE: " + index);
 
@@ -24,11 +29,45 @@ function SurfboardPage() {
         .catch((error) => {
             console.error("Error fetching surf location: ", error);
         });
+
+        axios.get(`https://localhost:7177/api/OwnedSurfboards/${userID}/${index}`)
+        .then((response) => {
+          setFavsurfboard(response);
+  
+            if(Favsurfboard.data.ownedBoardID === null)
+            {
+              setStar(0);
+            }
+            else
+            {
+              setStar(1);
+            }
+          
+        })
+        .catch((error) => {
+            console.error("Error fetching surf location: ", error);
+        });
+
+
     }, [location]);
+
+    
+
+    const handleStarClick  = () => {
+
+    }
 
   return (
     <div class="allback" >
-      <p class="title">{surfboard.brand}, {surfboard.name} details</p>
+      <p class="title">{surfboard.brand}, {surfboard.name} details      
+      {userID ? (
+      <StarIcon
+          onClick={handleStarClick}
+          style={{ color: star === 0 ? '#424141' : '#e87a5e', cursor: 'pointer' }}
+          fontSize="medium"
+        />
+        ) : (<></>)}</p>
+
       <div class="content3">
         <p>Brand: {surfboard.brand}</p>
         <p>Model: {surfboard.name}</p>
@@ -38,8 +77,12 @@ function SurfboardPage() {
         <p>Board type: {surfboard.type}</p>      
       </div>
 
-
-        <OwnedSurfboardScroller/>
+      {userID ? (
+        <>
+          <p class="title">Your owned surfboards</p>
+          <OwnedSurfboardScroller/>
+        </>
+        ):(<></>)}
 
       <div class="content">
       <img src={img1} alt="wetsuit Image" class="left-image"></img>

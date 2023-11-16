@@ -93,8 +93,8 @@ function ForecastPage() {
               wetsuitID: 0,
               type: "string",
               thickness: "string",
-              hightemp: "string",
-              lowtemp: "string",
+              hightemp: 0,
+              lowtemp: 0,
               name: "string",
               brand: "string"
             },
@@ -102,8 +102,8 @@ function ForecastPage() {
               surfBoardID: 0,
               size: "string",
               type: "string",
-              highSwell: "string",
-              lowSwell: "string",
+              highSwell: 0,
+              lowSwell: 0,
               name: "string",
               brand: "string"
             }
@@ -210,7 +210,7 @@ function ForecastPage() {
             // Handle the unexpected error as needed
           }
         }
-      }, [conditionData]);
+      }, [location]);
       
       
 

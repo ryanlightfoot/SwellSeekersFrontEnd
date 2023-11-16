@@ -9,6 +9,7 @@ function ForecastTable(vars) {
 const _locationID = parseInt(vars.locationID);
 const _forecastDay = vars.forecastDay;
 const [surfCondition, setSurfCondition] = useState("null");
+const [surfBoard, setsurfBoard] = useState("null");
 let populatedChecker = false; //Checks if the the table has data
 let data = [];
 const feetconv = 3.28084; // Meter to feet conversion
@@ -23,6 +24,9 @@ date4.setDate(date3.getDate() + 1);
 const date5 = new Date(date4);
 date5.setDate(date4.getDate() + 1);
 console.log("TODAY " + date);
+let totSwell = 0;
+let totTemp = 0;
+let n = 0;
 
 const monthNames = [
   "January", "February", "March", "April", "May", "June",
@@ -54,6 +58,17 @@ const monthNames = [
 
       populatedChecker = true;
     }
+
+    useEffect(() => {
+
+      axios.get(`https://localhost:7177/api/LocationConditions/ByLocation/${_locationID}?forecastDate=${_forecastDay}`)
+        .then((response) => {
+            setSurfCondition(response.data);
+        })
+        .catch((error) => {
+            console.error("Error fetching surf location: ", error);
+        });
+    }, [_locationID]);
 
   //Dynamically assigns windspeed bgColor
   const getWindSpeedColor = (windSpeed) => { 
@@ -98,13 +113,32 @@ const monthNames = [
   // Organize data by date
   data.forEach((row) => {
     const date = row.date; // Replace 'date' with the actual property containing the date
-  
+    const valSwell = parseInt(row.swellSize);
+    const valTemp = parseInt(row.temperature);
     if (!groupedData[date]) {
       groupedData[date] = [];
     }
-  
+    totSwell += valSwell;
+    totTemp += valTemp;
+    n += 1;
     groupedData[date].push(row);
   });
+
+  const averageSwell = n === 0 ? 0 : (totSwell / n).toFixed(0);
+  const averageTemp = n === 0 ? 0 : (totTemp / n).toFixed(0);
+
+  useEffect(() => {
+
+    axios.get(`https://localhost:7177/api/SurfBoard/average/${String(averageSwell)}`)
+      .then((response) => {
+          setsurfBoard(response.data);
+          console.log("surfBoard");
+          console.log(surfBoard);
+      })
+      .catch((error) => {
+          console.error("Error fetching surf location: ", error);
+      });
+  }, [averageSwell]);
 
   //Use data to point icon the correct  direction
   const getDirectionIcon = (degrees) => {
@@ -151,6 +185,8 @@ const monthNames = [
           </TableBody>
         </Table>
       </TableContainer>
+      <p class="dates">Average swell: {averageSwell} Average temp: {averageTemp}</p>
+      <p class="dates">Suggested Board:  {surfBoard.type} {surfBoard.brand} {surfBoard.name}</p>
     </div>
   );
 }
