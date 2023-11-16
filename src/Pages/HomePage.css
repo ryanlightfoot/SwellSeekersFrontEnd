@@ -65,6 +65,14 @@
     margin-bottom: 0%;
   }
 
+  .dates2{
+    margin-top: 0%;
+    margin-left: 5%;
+    margin-bottom: 0%;
+    font-size: small;
+    display: inline-block; /* or display: inline; */
+  }
+
   .coords{
     font-size: smaller;
     margin-top: 1%;

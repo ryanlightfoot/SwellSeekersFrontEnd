@@ -76,7 +76,8 @@ function ForecastPage() {
             swellSize: String(conditionData.data.hours[i].swellHeight.sg),
             swellDirection: String(conditionData.data.hours[i].swellDirection.sg),
             swellPeriod: String(conditionData.data.hours[i].swellPeriod.sg),
-            temp: String(conditionData.data.hours[i].airTemperature.sg),
+            temp: String(conditionData.data.hours[i].waterTemperature.sg),
+            Watertemp: String(conditionData.data.hours[i].waterTemperature.sg),
             dateTime: String(conditionData.data.hours[i].time),
             locationID: realLocation,
             wetsuitID: 1,
@@ -124,7 +125,7 @@ function ForecastPage() {
       console.error('Error loading data:', error)
       console.log(error.response);
     }
-  }, [userID]);
+  }, [userID, surfLocation, conditionData]);
 
     const StormGlassDATA = () => {
       // Assuming your API endpoint for fetching a surf location by ID is something like '/api/surflocations/{locationId}'
@@ -132,7 +133,7 @@ function ForecastPage() {
         params: {
           lat: (surfLocation.latitude),
           lng: (surfLocation.longitude),
-          params: 'windSpeed,windDirection,swellHeight,swellDirection,swellPeriod,airTemperature',
+          params: 'windSpeed,windDirection,swellHeight,swellDirection,swellPeriod,airTemperature,waterTemperature',
           end: end.utc().format('X'),
         },
         headers: {

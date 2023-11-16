@@ -174,7 +174,7 @@ const monthNames = [
               <TableCell align="center">Swell Direction</TableCell>
               <TableCell align="center">Wind Speed</TableCell>
               <TableCell align="center">Wind Direction</TableCell>
-              <TableCell align="center">Temperature</TableCell>
+              <TableCell align="center">Water temperature</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -197,9 +197,18 @@ const monthNames = [
           </TableBody>
         </Table>
       </TableContainer>
-      <p class="dates">Average swell: {averageSwell} Average temp: {averageTemp}</p>
-      <p class="dates">Suggested Board:  {surfBoard.type} {surfBoard.brand} {surfBoard.name}</p>
-      <p class="dates">Suggested Wetsuit:  {surfTemp.type} {surfTemp.brand} {surfTemp.name}</p>
+      <div class="dates2"> 
+      {surfBoard.type !== undefined ? (
+  <p>Suggested Board: {surfBoard.type} {surfBoard.brand} {surfBoard.name}</p>
+    ) : ( <p>Suggested Board: No suggestions</p>
+    )}
+      {surfBoard.type !== undefined ? (
+      <p>Suggested Wetsuit:  {surfTemp.type} {surfTemp.brand} {surfTemp.name}</p>
+      ) : (
+      <p>Suggested Wetsuit: No suggestions</p>
+      )}
+      </div>
+
     </div>
   );
 }
