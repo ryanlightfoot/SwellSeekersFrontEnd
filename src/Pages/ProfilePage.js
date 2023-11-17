@@ -25,12 +25,15 @@ function ProfilePage() {
   }
 
   return (
-    <div>
-      <form>
+    <div class="profile">
       <h3>Edit your profile</h3>
       <button class="button-5" onClick={logout}>Log out</button>
+      <br/>
       <button class="button-5" onClick={ChangeUser}>Change username</button>
-      </form>
+      <br/>
+      <button class="button-5" onClick={ChangeUser}>Change password</button>
+      <br/>
+      <button class="button-5" onClick={ChangeUser}>Delete account</button>
     </div>
   );
 }
